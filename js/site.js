@@ -85,13 +85,17 @@ let events = [{
 
 let filteredEvents = events;
 
+
 // dropdown menu declarations for specific events
 
 function dropDown() {
     let eventDD = document.getElementById("eventDropDown");
     eventDD.innerHTML = "";
-    let distinctEvents = [...new Set(events.map(event => event.city))];
-    let linkHTMLEnd = '<div class="dropdown-divider"></div><a class="dropdown-item" onclick="getEvents(this)" data-string="All">All</a>';
+    
+    let curEvents = JSON.parse(localStorage.getItem("eventsArray")) || events;
+
+    let distinctEvents = [...new Set(curEvents.map(event => event.city))];
+    let linkHTMLEnd = '<div class="dropdown-divider"></div><a class="dropdown-item" onclick="clearFunction()" data-string="Choose stats by city">Choose to reset table</a>';
     let resultHTML = "";
 
     for (i = 0; i < distinctEvents.length; i++) {
@@ -206,6 +210,19 @@ function displayStats() {
         maximumFractionDigits: 0
     });
 }
+
+function clearFunction() {
+    document.getElementById("propertyHighest").innerHTML = "";
+    document.getElementById("propertyLowest").innerHTML = "";
+    document.getElementById("propertyAverage").innerHTML = "";
+    document.getElementById("violentHighest").innerHTML = "";
+    document.getElementById("violentLowest").innerHTML = "";
+    document.getElementById("violentAverage").innerHTML = "";
+    document.getElementById("totalHighest").innerHTML = "";
+    document.getElementById("totalLowest").innerHTML = "";
+    document.getElementById("totalAverage").innerHTML = "";
+}
+
 // display the data after adding
 
 function displayData() {
@@ -246,16 +263,16 @@ function saveEventData() {
     let obj = {};
 
     obj["city"] = document.getElementById("newEntryCity").value;
-    obj["crime_capita"] = document.getElementById("newEntryTotal").value;
-    obj["violent_capita"] = document.getElementById("newEntryViolent").value;
-    obj["property_capita"] = document.getElementById("newEntryProperty").value;
+    obj["crime_capita"] = parseInt(document.getElementById("newEntryTotal").value, 10);
+    obj["violent_capita"] = parseInt(document.getElementById("newEntryViolent").value, 10);
+    obj["property_capita"] = parseInt(document.getElementById("newEntryProperty").value, 10);
     obj["year"] = document.getElementById("newEntryYear").value;
 
     curEvents.push(obj);
 
     localStorage.setItem("eventsArray", JSON.stringify(curEvents));
 
-    buildDropDown();
+    dropDown();
     displayData();
 }
 

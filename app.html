@@ -42,9 +42,15 @@
     <main class="flex-shrink-4">
         <div class="container">
             <div class="row">
+                <div class="col-sm-4 border-end border-1">
+                    <h2 class="customtextcolor mb-0">College Safety Instructions</h2>
+                    <hr>
+                    <p>Click the button to the right to display crime data sorted by city. To add new data, use the
+                        button titled "Add data" below. If you want to restart your search with just the default
+                        starting data, click the button below and refresh the page.</p>
+                </div>
                 <div class="col-sm-8">
-
-                    <button class="btn btn-secondary dropdown-toggle mt-3" type="button" id="buttonName"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="buttonName"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Choose stats by city
                     </button>
@@ -56,7 +62,7 @@
                     </ul>
 
 
-                    <table id="onclickTable" class="table table-bordered border-dark mt-3">
+                    <table id="onclickTable" class="table table-bordered border-1 mt-3">
 
                         <thead>
                             <tr>
@@ -95,39 +101,56 @@
                                 <td id="propertyAverage"></td>
                             </tr>
                         </tbody>
+
                     </table>
-                </div>
-                <div class="col-sm-4 text-center align-self-center">
-                    <img src="/img/Screen Shot 2021-07-19 at 4.57.03 AM.png" alt="">
+
                 </div>
             </div>
-        
-        <form id="defaultDataTable">
-            <div class="row">
-                <div class="col-sm-8">
-                    <button class="btn btn-secondary mt-3" type="button" data-bs-toggle="modal"
-                        data-bs-target="#addData">
-                        Add data
-                    </button>
-                    <button id="clearSiteStorage" class="btn btn-secondary mt-3" type="button">
-                        Clear site storage
-                    </button>
-                    <table id="eventData" class="table table-bordered border-dark my-3">
+            <hr>
+            <form id="defaultDataTable">
+                <div class="row">
+                    <div class="col-sm-8 border-end border-1">
+                        <button class="btn btn-secondary mt-3" type="button" data-bs-toggle="modal"
+                            data-bs-target="#addData">
+                            Add data
+                        </button>
+                        <button id="clearSiteStorage" class="btn btn-secondary mt-3" type="button">
+                            Clear site storage
+                        </button>
+                        <table id="eventData" class="table table-bordered border-1 my-3">
 
-                        <thead>
-                            <th>City</th>
-                            <th>Total crime / capita</th>
-                            <th>Violent crime / capita</th>
-                            <th>Property crime / capita</th>
-                            <th>Year</th>
-                        </thead>
+                            <thead>
+                                <th>City</th>
+                                <th>Total crime / capita</th>
+                                <th>Violent crime / capita</th>
+                                <th>Property crime / capita</th>
+                                <th>Year</th>
+                            </thead>
 
-                        <tbody id="eventBody">
+                            <tbody id="eventBody">
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
-        </form>
+                        </table>
+                    </div>
+                    <div class="col-sm-4">
+                        <h2 class="customtextcolor">Disclaimer</h2>
+                        <hr>
+                        <p>* data derived from the FBI database
+                            <br>
+                            <br>
+                            * intrinsic fallibility and innacuracy of data -> unreported crime not displayed
+                            <br>
+                            <br>
+                            * crime data based on city, FBI database does not provide crime data by address, so the
+                            crime about a specific university can not be derived. as a result, keep in mind that the
+                            data is not limited to the university's geographical location-- it displays crime data for
+                            the entire city
+                        </p>
+                    </div>
+
+                </div>
+            </form>
         </div>
         <!-- Modal -->
 
