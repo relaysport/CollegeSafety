@@ -1,6 +1,4 @@
-// declare onload data input
-
-let events = [{
+let entries = [{
         city: "Memphis",
         crime_capita: 8029,
         violent_capita: 1901,
@@ -81,42 +79,35 @@ let events = [{
     },
 ];
 
-// default display variable for all events
-
-let filteredEvents = events;
-
-
-// dropdown menu declarations for specific events
+let filteredEntries = entries;
 
 function dropDown() {
-    let eventDD = document.getElementById("eventDropDown");
-    eventDD.innerHTML = "";
+    let cityDD = document.getElementById("cityDropDown");
+    cityDD.innerHTML = "";
     
-    let curEvents = JSON.parse(localStorage.getItem("eventsArray")) || events;
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
 
-    let distinctEvents = [...new Set(curEvents.map(event => event.city))];
+    let distinctEntries = [...new Set(curEntries.map(entry => entry.city))];
     let linkHTMLEnd = '<div class="dropdown-divider"></div><a class="dropdown-item" onclick="clearFunction()" data-string="Choose stats by city">Choose to reset table</a>';
     let resultHTML = "";
 
-    for (i = 0; i < distinctEvents.length; i++) {
-        resultHTML += `<a class="dropdown-item" onclick="getEvents(this)" data-string="${distinctEvents[i]}">${distinctEvents[i]}</a>`;
+    for (i = 0; i < distinctEntries.length; i++) {
+        resultHTML += `<a class="dropdown-item" onclick="getEntries(this)" data-string="${distinctEntries[i]}">${distinctEntries[i]}</a>`;
     }
     resultHTML += linkHTMLEnd;
-    eventDD.innerHTML = resultHTML;
+    cityDD.innerHTML = resultHTML;
     displayData();
 }
 
-// 
-
-function getEvents(element) {
+function getEntries(element) {
     let city = element.getAttribute("data-string");
-    curEvents = JSON.parse(localStorage.getItem("eventsArray")) || events;
-    filteredEvents = curEvents;
+    curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
+    filteredEntries = curEntries;
 
     document.getElementById("buttonName").innerHTML = `${city}`;
 
     if (city != "All") {
-        filteredEvents = curEvents.filter(function (item) {
+        filteredEntries = curEntries.filter(function (item) {
             if (item.city == city) {
                 return item;
             }
@@ -124,8 +115,6 @@ function getEvents(element) {
     }
     displayStats();
 }
-
-// display the stats
 
 function displayStats() {
     let total = 0;
@@ -144,8 +133,8 @@ function displayStats() {
     let violentObject = 0;
     let propertyObject = 0;
 
-    for (i = 0; i < filteredEvents.length; i++) {
-        totalObject = filteredEvents[i].crime_capita;
+    for (i = 0; i < filteredEntries.length; i++) {
+        totalObject = filteredEntries[i].crime_capita;
         total += totalObject;
 
         if (most < totalObject) {
@@ -157,7 +146,7 @@ function displayStats() {
         }
     }
 
-    average = total / filteredEvents.length;
+    average = total / filteredEntries.length;
 
     document.getElementById("totalHighest").innerHTML = most.toLocaleString();
     document.getElementById("totalLowest").innerHTML = least.toLocaleString();
@@ -166,8 +155,8 @@ function displayStats() {
         maximumFractionDigits: 0
     });
 
-    for (i = 0; i < filteredEvents.length; i++) {
-        violentObject = filteredEvents[i].violent_capita;
+    for (i = 0; i < filteredEntries.length; i++) {
+        violentObject = filteredEntries[i].violent_capita;
         total1 += violentObject;
 
         if (most1 < violentObject) {
@@ -179,7 +168,7 @@ function displayStats() {
         }
     }
 
-    average1 = total1 / filteredEvents.length;
+    average1 = total1 / filteredEntries.length;
 
     document.getElementById("violentHighest").innerHTML = most1.toLocaleString();
     document.getElementById("violentLowest").innerHTML = least1.toLocaleString();
@@ -188,8 +177,8 @@ function displayStats() {
         maximumFractionDigits: 0
     });
 
-    for (i = 0; i < filteredEvents.length; i++) {
-        propertyObject = filteredEvents[i].property_capita;
+    for (i = 0; i < filteredEntries.length; i++) {
+        propertyObject = filteredEntries[i].property_capita;
         total2 += propertyObject;
 
         if (most2 < propertyObject) {
@@ -201,7 +190,7 @@ function displayStats() {
         }
     }
 
-    average2 = total2 / filteredEvents.length;
+    average2 = total2 / filteredEntries.length;
 
     document.getElementById("propertyHighest").innerHTML = most2.toLocaleString();
     document.getElementById("propertyLowest").innerHTML = least2.toLocaleString();
@@ -223,42 +212,38 @@ function clearFunction() {
     document.getElementById("totalAverage").innerHTML = "";
 }
 
-// display the data after adding
-
 function displayData() {
     let template = document.getElementById("entryData-template");
-    let eventBody = document.getElementById("eventBody");
+    let entryBody = document.getElementById("entryBody");
 
-    eventBody.innerHTML = "";
+    entryBody.innerHTML = "";
 
-    let curEvents = JSON.parse(localStorage.getItem("eventsArray")) || [];
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || [];
 
-    if (curEvents.length == 0) {
-        curEvents = events;
-        localStorage.setItem("eventsArray", JSON.stringify(curEvents));
+    if (curEntries.length == 0) {
+        curEntries = entries;
+        localStorage.setItem("entriesArray", JSON.stringify(curEntries));
     }
 
-    for (i = 0; i < curEvents.length; i++) {
+    for (i = 0; i < curEntries.length; i++) {
 
-        const eventRow = document.importNode(template.content, true);
+        const entryRow = document.importNode(template.content, true);
 
-        eventCols = eventRow.querySelectorAll("td");
+        entryCols = entryRow.querySelectorAll("td");
         
-        eventCols[0].textContent = curEvents[i].city;
-        eventCols[1].textContent = curEvents[i].crime_capita;
-        eventCols[2].textContent = curEvents[i].violent_capita;
-        eventCols[3].textContent = curEvents[i].property_capita;
-        eventCols[4].textContent = curEvents[i].year;
+        entryCols[0].textContent = curEntries[i].city;
+        entryCols[1].textContent = curEntries[i].crime_capita;
+        entryCols[2].textContent = curEntries[i].violent_capita;
+        entryCols[3].textContent = curEntries[i].property_capita;
+        entryCols[4].textContent = curEntries[i].year;
         
-        eventBody.appendChild(eventRow);
+        entryBody.appendChild(entryRow);
     }
 
 }
 
-//
-
-function saveEventData() {
-    let curEvents = JSON.parse(localStorage.getItem("eventsArray")) || events;
+function saveEntryData() {
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
 
     let obj = {};
 
@@ -268,18 +253,17 @@ function saveEventData() {
     obj["property_capita"] = parseInt(document.getElementById("newEntryProperty").value, 10);
     obj["year"] = document.getElementById("newEntryYear").value;
 
-    curEvents.push(obj);
+    curEntries.push(obj);
 
-    localStorage.setItem("eventsArray", JSON.stringify(curEvents));
+    localStorage.setItem("entriesArray", JSON.stringify(curEntries));
 
     dropDown();
     displayData();
 }
 
-// clear inputs
-
 function clearDataInputs() {
-    let dataTable = [];
 
-    localStorage.setItem("eventsArray", JSON.stringify(dataTable))
+localStorage.clear();
+window.location.reload();
+
 }

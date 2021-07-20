@@ -53,68 +53,185 @@
     </nav>
 
     <main class="flex-shrink-0">
-        <div class="container col-xxl-8 px-4 py-5 mt-5">
-            <h1 id="customtextcolor">The Code</h1>
+        <div class="container col-xxl-9 px-4 py-5 mt-5">
+            <h1 class="customtextcolor">The Code</h1>
             <hr style="margin-top: 0;height:2px;border-width:0;color:gray;background-color:gray">
             <div class="row">
                 <div class="col-8" id="codeCol">
                     <pre><code class="language-javascript line-numbers">
-// fizzFizz function
+let entries = [{city: "Memphis", crime_capita: 8029, violent_capita: 1901, property_capita: 6128, year: 2019},
+              {city: "Memphis", crime_capita: 8349, violent_capita: 1943, property_capita: 6406, year: 2018},
+              {city: "Memphis", crime_capita: 8301, violent_capita: 2003, property_capita: 6298, year: 2017},
+              {city: "Detroit", crime_capita: 6268, violent_capita: 1965, property_capita: 4303, year: 2019},
+              {city: "Detroit", crime_capita: 6313, violent_capita: 2008, property_capita: 4305, year: 2018},
+              {city: "Detroit", crime_capita: 6598, violent_capita: 2057, property_capita: 4541, year: 2017},
+              {city: "Irvine", crime_capita: 1370, violent_capita: 64, property_capita: 1306, year: 2019},
+              {city: "Irvine", crime_capita: 1326, violent_capita: 56, property_capita: 1270, year: 2018},
+              {city: "Irvine", crime_capita: 1377, violent_capita: 61, property_capita: 1316, year: 2017},
+              {city: "Greensboro", crime_capita: 4508, violent_capita: 819, property_capita: 3689, year: 2019},];
 
-function fizzFizz(value1, value2) {
-    let returnValue = [];
-    for (let i = 1; i <= 100; i++) {
-        returnValue.push((i % value1 == 0 ? "Fizz" : "") + (i % value2 == 0 ? "Buzz" : "") || i);
+let filteredEntries = entries;
+
+function dropDown() {
+    let cityDD = document.getElementById("cityDropDown");
+    cityDD.innerHTML = "";
+    
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
+
+    let distinctEntries = [...new Set(curEntries.map(entry => entry.city))];
+    let linkHTMLEnd = '<div class="dropdown-divider"></div><a class="dropdown-item" onclick="clearFunction()" data-string="Choose stats by city">Choose to reset table</a>';
+    let resultHTML = "";
+
+    for (i = 0; i < distinctEntries.length; i++) {
+        resultHTML += `<a class="dropdown-item" onclick="getEntries(this)" data-string="${distinctEntries[i]}">${distinctEntries[i]}</a>`;
+    }
+    resultHTML += linkHTMLEnd;
+    cityDD.innerHTML = resultHTML;
+    displayData();
+}
+
+function getEntries(element) {
+    let city = element.getAttribute("data-string");
+    curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
+    filteredEntries = curEntries;
+
+    document.getElementById("buttonName").innerHTML = `${city}`;
+
+    if (city != "All") {
+        filteredEntries = curEntries.filter(function (item) {
+            if (item.city == city) {
+                return item;
+            }
+        });
+    }
+    displayStats();
+}
+
+function displayStats() {
+    let total = 0;
+    let average = 0;
+    let most = 0;
+    let least = -1;
+    let totalObject = 0;
+
+    for (i = 0; i < filteredEntries.length; i++) {
+        totalObject = filteredEntries[i].crime_capita;
+        total += totalObject;
+
+        if (most < totalObject) {
+            most = totalObject;
+        }
+
+        if (least > totalObject || least < 0) {
+            least = totalObject;
+        }}
+
+    average = total / filteredEntries.length;
+
+    document.getElementById("totalHighest").innerHTML = most.toLocaleString();
+    document.getElementById("totalLowest").innerHTML = least.toLocaleString();
+    document.getElementById("totalAverage").innerHTML = average.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
+}
+
+function clearFunction() {
+    document.getElementById("totalHighest").innerHTML = "";
+    document.getElementById("totalLowest").innerHTML = "";
+    document.getElementById("totalAverage").innerHTML = "";
+}
+
+function displayData() {
+    let template = document.getElementById("entryData-template");
+    let entryBody = document.getElementById("entryBody");
+
+    entryBody.innerHTML = "";
+
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || [];
+
+    if (curEntries.length == 0) {
+        curEntries = entries;
+        localStorage.setItem("entriesArray", JSON.stringify(curEntries));
     }
 
-    return returnValue;
+    for (i = 0; i < curEntries.length; i++) {
+
+        const entryRow = document.importNode(template.content, true);
+
+        entryCols = entryRow.querySelectorAll("td");
+        
+        entryCols[0].textContent = curEntries[i].city;
+        entryCols[1].textContent = curEntries[i].crime_capita;
+        entryCols[2].textContent = curEntries[i].violent_capita;
+        entryCols[3].textContent = curEntries[i].property_capita;
+        entryCols[4].textContent = curEntries[i].year;
+        
+        entryBody.appendChild(entryRow);
+    }
 
 }
 
-// buzzBuzz function
+function saveEntryData() {
+    let curEntries = JSON.parse(localStorage.getItem("entriesArray")) || entries;
 
-function buzzBuzz() {
-    let value1 = document.getElementById("fizzValue").value;
-    let value2 = document.getElementById("buzzValue").value;
+    let obj = {};
 
-    let templateHTML = document.getElementById("template-row-items")
-    let resultsHTML = "";
-    let output = fizzFizz(value1, value2);
+    obj["city"] = document.getElementById("newEntryCity").value;
+    obj["crime_capita"] = parseInt(document.getElementById("newEntryTotal").value, 10);
+    obj["violent_capita"] = parseInt(document.getElementById("newEntryViolent").value, 10);
+    obj["property_capita"] = parseInt(document.getElementById("newEntryProperty").value, 10);
+    obj["year"] = document.getElementById("newEntryYear").value;
 
-    for (i = 0; i < output.length; i += 5) {
-        resultsHTML += templateHTML.innerHTML.replace('{{val1}}', output[i])
-            .replace('{{val2}}', output[i + 1])
-            .replace('{{val3}}', output[i + 2])
-            .replace('{{val4}}', output[i + 3])
-            .replace('{{val5}}', output[i + 4]);
-    }
+    curEntries.push(obj);
 
-    document.getElementById("results").innerHTML = resultsHTML;
+    localStorage.setItem("entriesArray", JSON.stringify(curEntries));
+
+    dropDown();
+    displayData();
 }
 
+function clearDataInputs() {
+
+localStorage.clear();
+window.location.reload();
+
+}
                 </code>
             </pre>
                 </div>
                 <div class="col" id="explainCol">
-                    <h1 id="customtextcolor">fizzFizz</h1>
-                    <p>The fizzFizz function pulls the user inputs from the function buzzBuzz and orders them as value1
-                        and value2. An incrementing for loop runs from 1 to 100 to display 'Fizz' when the given number,
-                        i, is divisible by value1. The same argument is used for value2 and 'Buzz'. If both conditions
-                        are met, the output is 'FizzBuzz'. If neither of the conditions are met, the output is the given
-                        number.
-                    </p>
-
-                    <h1 id="customtextcolor">buzzBuzz</h1>
-                    <p>The primary use of the second function is to display the game in a table. The first few lines
-                        are included for necessity; 10 and 11 pass the user inputs to fizzFizz, lines 13 through 15
-                        declare variables and information from fizzFizz needed for the following for loop to
-                        properly run.
-
-                        The incrementing for loop runs for the entirety of the fizzFizz data (from 1 to 100), but
-                        only gives five values per loop. Running for five values allows the for loop to align with
-                        the HTML template, displaying five outputs for each row in the table. The template
-                        placeholders are replaced by fizzFizz outputs to create a table!
-                    </p>
+                    <p>The first two variables are declared globally by necessity, I will need to pull them into my functions later on. The array entries is the default, hard-coded information. filteredEntries is set for ease of access as a global variable for later on.</p>
+                    <h1 class="customtextcolor">dropDown</h1>
+                    <p>The dropDown function codes the drop down menu in my program. It adds to the basic HTML template
+                        for the menu, pulling in the entries array and targetting the city property within each object
+                        inside it. A for loop is used to run through all the objects of the array and unique city
+                        property is placed in the drop down menu. Unique cities are exclusively added by means of the
+                        'new Set' that filters for new information only. The results are passed on to the displayData
+                        function, which is used to actually show the menu on the program page.</p>
+                    <h1 class="customtextcolor">getEntries</h1>
+                    <p>TgetEvents enables the property filter that is utilized by displayStats. The if argument pulls in
+                        specific properties after gathering information by the variable curEvents.
+                    <h1 class="customtextcolor">displayStats</h1>
+                    <p>The displayStats function is used to show the default data. The function loops over every object
+                        and searches for a specific property, and the most relevant values (most, least, and average)
+                        are shown on screen after being attached to HTML by element. Although not shown for readability and understanding, this section of code is 'duplicated'
+                        twice to account for violent crimes and property crimes.</p>
+                    <h1 class="customtextcolor">clearFunction</h1>
+                    <p>clearFunction allows me to remove all inputs from the top stats table. It is called into dropDown
+                        and is activated by clicking the "Choose to reset table" option. Similar to displayStats, this code is run over two more times for violent crimes and property crimes.</p>
+                    <h1 class="customtextcolor">displayData</h1>
+                    <p>displayData displays the default and user inputs in the bottom table. It pulls information from
+                        the local storage and uses a for loop to gather the object properties. The information is stored
+                        in the HTML template that is called at the beginning of the function.</p>
+                    <h1 class="customtextcolor">saveEntryData</h1>
+                    <p>This function saves user inputs into the bottom table, helping add it to local storage and
+                        dropDown's menu in the process. It completes this by making a new object that is created using
+                        the user inputs. The object is pushed into the array and passed to dropDown and displayData,
+                        which complete the rest of the work.</p>
+                    <h1 class="customtextcolor">clearDataInputs</h1>
+                    <p>clearDataInputs clears site storage (user inputs) by creating an empty array that is set as local
+                        storage.</p>
                 </div>
             </div>
         </div>

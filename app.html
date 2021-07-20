@@ -46,8 +46,9 @@
                     <h2 class="customtextcolor mb-0">College Safety Instructions</h2>
                     <hr>
                     <p>Click the button to the right to display crime data sorted by city. To add new data, use the
-                        button titled "Add data" below. If you want to restart your search with just the default
-                        starting data, click the button below and refresh the page.</p>
+                        button titled "Add data" below. If you have added new data, you can compare it with other data
+                        by using the same button on the right. If you want to restart your search with
+                        the default starting data, click the button below and refresh the page.</p>
                 </div>
                 <div class="col-sm-8">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="buttonName"
@@ -55,7 +56,7 @@
                         Choose stats by city
                     </button>
 
-                    <ul id="eventDropDown" class="dropdown-menu" aria-labelledby="hi">
+                    <ul id="cityDropDown" class="dropdown-menu" aria-labelledby="hi">
 
                         <!--Template for dropdown-->
 
@@ -117,7 +118,7 @@
                         <button id="clearSiteStorage" class="btn btn-secondary mt-3" type="button">
                             Clear site storage
                         </button>
-                        <table id="eventData" class="table table-bordered border-1 my-3">
+                        <table id="data" class="table table-bordered border-1 my-3">
 
                             <thead>
                                 <th>City</th>
@@ -127,25 +128,24 @@
                                 <th>Year</th>
                             </thead>
 
-                            <tbody id="eventBody">
+                            <tbody id="entryBody">
 
                             </tbody>
 
                         </table>
                     </div>
                     <div class="col-sm-4">
-                        <h2 class="customtextcolor">Disclaimer</h2>
+                        <h2 class="customtextcolor">Notes</h2>
                         <hr>
-                        <p>* data derived from the FBI database
-                            <br>
-                            <br>
-                            * intrinsic fallibility and innacuracy of data -> unreported crime not displayed
-                            <br>
-                            <br>
-                            * crime data based on city, FBI database does not provide crime data by address, so the
-                            crime about a specific university can not be derived. as a result, keep in mind that the
-                            data is not limited to the university's geographical location-- it displays crime data for
-                            the entire city
+                        <p>The default data was derived from the FBI's UCR publications. While it might seem like a
+                            reliable source to some, it is important to keep in mind that crime statistics are
+                            inherently inaccurate because they fail to include unreported crimes that vary greatly in
+                            type across populations and locations. Furthermore, the database lacks crime data
+                            for any given specific address. As a result, crime in the area about a university's unique
+                            address is not accessible. The data is still applicable because students typically traverse
+                            and have contact with many different parts of the city of their school, but campus crime
+                            data and the crime in the close vicinity likely differ from the calculated statistics. Users
+                            should keep this in mind.
                         </p>
                     </div>
 
@@ -191,7 +191,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" onclick="saveEventData()" class="btn btn-primary"
+                        <button type="button" onclick="saveEntryData()" class="btn btn-primary"
                             data-bs-dismiss="modal">Save changes</button>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
     <script src="/js/site.js"></script>
 
     <script>
-        document.getElementById("clearSiteStorage").addEventListener("click", clearDataInputs)
+        document.getElementById("clearSiteStorage").addEventListener("click", localStorage.clear())
     </script>
 
 </body>
