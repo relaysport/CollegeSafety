@@ -260,10 +260,3 @@ function saveEntryData() {
     dropDown();
     displayData();
 }
-
-function clearDataInputs() {
-
-localStorage.clear();
-window.location.reload();
-
-}

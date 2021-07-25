@@ -13,7 +13,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<body class="CADataContainer" onload=" dropDown()">
+<body class="CADataContainer" onload="dropDown()">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top custombackgroundcolor">
         <div class="container-fluid">
             <a class="navbar-brand" href="/home.html"><img src="img/favicon.ico" alt=""></a>
@@ -43,14 +43,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-4 border-end border-1">
-                    <h2 class="customtextcolor mb-0">College Safety Instructions</h2>
+                    <h2 class="customtextcolor mb-0 mt-5">College Safety Instructions</h2>
                     <hr>
                     <p>Click the button to the right to display crime data sorted by city. To add new data, use the
                         button titled "Add data" below. If you have added new data, you can compare it with other data
                         by using the same button on the right. If you want to restart your search with
                         the default starting data, click the button below and refresh the page.</p>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 mt-5">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="buttonName"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Choose stats by city
@@ -224,7 +224,10 @@
     <script src="/js/site.js"></script>
 
     <script>
-        document.getElementById("clearSiteStorage").addEventListener("click", localStorage.clear())
+        document.getElementById("clearSiteStorage").addEventListener("click", () => {
+            localStorage.clear();
+            displayData();
+        })
     </script>
 
 </body>
