@@ -260,3 +260,46 @@ function saveEntryData() {
     dropDown();
     displayData();
 }
+
+function getWord() {
+
+    let city = document.getElementById("newEntryCity").value;
+    let total = document.getElementById("newEntryTotal").value;
+    let violent = document.getElementById("newEntryViolent").value;
+    let property = document.getElementById("newEntryProperty").value;
+    let year = document.getElementById("newEntryYear").value;
+
+    let errorState = false;
+    let errorMsg = "";
+    let isPal = false;
+
+    if (city == "") {
+        errorMsg += "You have to type something in!";
+    } else if (total == "") {
+        errorMsg += "You have to type something in!";
+    } else if (year = "") {
+        errorMsg += "You have to type something in!";
+    } else if (violent = "") {
+        errorMsg += "You have to type something in!";
+    } else if (property = "") {
+        errorMsg += "You have to type something in!";
+    } else {
+        isPal = true;
+    }
+
+    if (!isPal) {
+        Swal.fire(
+            'Sorry!',
+            `${errorMsg}`,
+            'error'
+        );
+        return;
+    } else {
+        Swal.fire(
+            'Congratulations!',
+            'You have entered the data',
+            'success'
+        );
+        return;
+    }
+};
